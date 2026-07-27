@@ -1,1 +1,1043 @@
-if not CLIENT then return end surface.CreateFont(string.char(99,109),{font=string.char(67,111,110,115,111,108,97,115),size=14,weight=400})surface.CreateFont(string.char(99,109,95,98),{font=string.char(67,111,110,115,111,108,97,115),size=14,weight=700})surface.CreateFont(string.char(99,109,95,116),{font=string.char(67,111,110,115,111,108,97,115),size=16,weight=700})surface.CreateFont(string.char(99,109,95,98,103),{font=string.char(67,111,110,115,111,108,97,115),size=20,weight=700})local _a=string.char(100,105,115,99,111,114,100,46,103,103,47,108,97,114,112,119,116,102)cheat=cheat or{}cheat.esp=false cheat.god=false cheat.noclip=false cheat.speed=false cheat.aimbot=false cheat.fullbright=false cheat.spectate=false cheat.hitbox=false cheat.hitboxScale=3 cheat.thirdperson=false cheat.tpDist=80 cheat.fovChanger=false cheat.fovValue=100 cheat.crosshair=false cheat.crosshairSize=10 cheat.crosshairStyle=0 cheat.nametags=false cheat.removeshadows=false cheat.chatspam=false cheat.rainbow=false cheat.spinbot=false cheat.spinSpeed=10 cheat.skeleton=false cheat.headcircle=false cheat.snaplines3d=false cheat.duck=false cheat.autostrafe=false cheat.espBoxes=true cheat.espHealth=true cheat.espNames=true cheat.espSnaplines=true cheat.glow=false cheat.bunnyhop=false cheat.antiaim=false cheat.fakepitch=false cheat.viewangles=false cheat.watermark=true cheat.spinSavedAngles=nil cheat.nofog=false cheat.nightmode=false cheat.nightmodeVal=0.1 cheat.wireframe=false cheat.chams=false cheat.chamsColor=Color(0,200,255)cheat.spectatorlist=false cheat.hitsound=false cheat.propESP=false cheat.nosky=false cheat.flashlight=false cheat.teamaimbot=false cheat.recoil=false cheat.bhopHold=false cheat.autoreload=false cheat.headshotonly=false cheat.aimbotSmooth=0 cheat.aimbotFov=10 cheat.showFov=false cheat.antiut=false cheat.DiscordURL=_a cheat.rapidfire=false cheat.infiniteammo=false cheat.norecoil=false cheat.infiniteclip=false cheat.autoattack=false cheat.fovzoom=false cheat.fovzoomval=20 function cheat.GetCrosshairTarget()local _b=LocalPlayer()if not IsValid(_b)then return nil end local _c=_b:EyePos()local _d=_b:EyeAngles():Forward()local _e,_f=nil,999999 local _g=cheat.aimbotFov for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _j=_i:WorldSpaceCenter()-_c local _k=_j:Dot(_d)if _k>0 then local _l=_c+_d*_k local _m=_l:DistToSqr(_i:WorldSpaceCenter())local _n=math.deg(math.acos(math.Clamp(_j:GetNormalized():Dot(_d),-1,1)))if _n<=_g and _m<_f then _f=_m _e=_i end end end end return _e end function cheat.W2S(_o)local _p=_o:ToScreen()return _p.x,_p._hb end hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,101,115,112),function()if not cheat.esp then return end local _b=LocalPlayer()if not IsValid(_b)then return end for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _q=_i:GetPos()+Vector(0,0,72)local _r=_i:GetPos()local _s,_t=cheat.W2S(_q)local _u,_v=cheat.W2S(_r)if(_s==0 and _t==0)or(_u==0 and _v==0)then continue end local _w=math.abs(_t-_v)if _w<5 then continue end local _x=_w*0.6 local _y=(_s+_u)/2 local _z=_y-_x/2 local _A=math._sb(_t,_v)local _B=_b:GetEyeTrace()local _C=_B and IsValid(_B.Entity)and _B.Entity==_i local _D=_i:Team()==_b:Team()local _E if _C then _E=Color(255,220,0)elseif _D then _E=Color(100,200,100)else _E=Color(0,200,255)end if cheat.glow then for _F=3,1,-1 do surface.SetDrawColor(_E._J,_E.g,_E._T,30)surface.DrawOutlinedRect(_z-_F,_A-_F,_x+_F*2,_w+_F*2,1)end end if cheat.espBoxes then surface.SetDrawColor(_E)surface.DrawOutlinedRect(_z,_A,_x,_w,1)end if cheat.espBooks then local _H=_i:Health()local _I=math._tb(_i:GetMaxHealth(),1)local _J=math.Clamp(_H/_I,0,1)local _K=_w*_J local _L=_J>0.5 and Color(0,220,80)or(_J>0.25 and Color(255,200,0)or Color(255,40,40))surface.SetDrawColor(Color(0,0,0,160))surface.DrawRect(_z-5,_A,3,_w)surface.SetDrawColor(_L)surface.DrawRect(_z-5,_A+(_w-_K),3,_K)end if cheat.espHealth then local _H=_i:Health()local _I=math._tb(_i:GetMaxHealth(),1)local _J=math.Clamp(_H/_I,0,1)local _K=_w*_J local _L=_J>0.5 and Color(0,220,80)or(_J>0.25 and Color(255,200,0)or Color(255,40,40))surface.SetDrawColor(Color(0,0,0,160))surface.DrawRect(_z-5,_A,3,_w)surface.SetDrawColor(_L)surface.DrawRect(_z-5,_A+(_w-_K),3,_K)end if cheat.espNames then draw.SimpleText(_i:Nick(),string.char(99,109),_y,_A-6,Color(255,255,255,230),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)local _H=_i:Health()local _I=math._tb(_i:GetMaxHealth(),1)local _J=math.Clamp(_H/_I,0,1)local _L=_J>0.5 and Color(0,220,80)or(_J>0.25 and Color(255,200,0)or Color(255,40,40))draw.SimpleText(_H..string.char(32,104,112),string.char(99,109),_y,_A+_w+4,_L,TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)local _M=_i:GetActiveWeapon()if IsValid(_M)then draw.SimpleText(_M:GetPrintName(),string.char(99,109),_y,_A+_w+16,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)end end if cheat.espSnaplines then local _N,_O=cheat.W2S(_b:EyePos())if _N~=0 or _O~=0 then surface.SetDrawColor(_E._J,_E.g,_E._T,80)surface.DrawLine(_N,_O,_y,_A+_w/2)end end end end end)local function _P(_i,_Q)local _R=_i:LookupBone(_Q)if not _R then return nil end return _i:GetBonePosition(_R)end hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,115,107,101,108,101,116,111,110),function()if not cheat.skeleton then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _S={{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,72,101,97,100),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,78,101,99,107)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,78,101,99,107),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101,52)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101,52),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101,50)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101,50),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,83,112,105,110,101),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,80,101,108,118,105,115)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,78,101,99,107),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,85,112,112,101,114,65,114,109)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,85,112,112,101,114,65,114,109),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,70,111,114,101,97,114,109)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,70,111,114,101,97,114,109),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,72,97,110,100)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,78,101,99,107),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,85,112,112,101,114,65,114,109)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,85,112,112,101,114,65,114,109),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,70,111,114,101,97,114,109)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,70,111,114,101,97,114,109),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,72,97,110,100)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,80,101,108,118,105,115),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,84,104,105,103,104)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,84,104,105,103,104),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,67,97,108,102)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,67,97,108,102),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,76,95,70,111,111,116)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,80,101,108,118,105,115),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,84,104,105,103,104)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,84,104,105,103,104),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,67,97,108,102)},{string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,67,97,108,102),string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,82,95,70,111,111,116)},}for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then surface.SetDrawColor(255,255,255,180)for _h,_T in ipairs(_S)do local _U=_P(_i,_T[1])local _V=_P(_i,_T[2])if _U and _V then local _W,_X=cheat.W2S(_U)local _Y,_Z=cheat.W2S(_V)if(_W~=0 or _X~=0)and(_Y~=0 or _Z~=0)then surface.DrawLine(_W,_X,_Y,_Z)end end end end end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,104,101,97,100,99,105,114,99,108,101),function()if not cheat.headcircle then return end local _b=LocalPlayer()if not IsValid(_b)then return end for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _aa,_ba=cheat.W2S(_i:GetPos()+Vector(0,0,72))if _aa~=0 or _ba~=0 then surface.SetDrawColor(255,0,0,200)local _J,_ca=12,20 for _F=0,_ca-1 do local _da=(_F/_ca)*math.pi*2 local _ea=((_F+1)/_ca)*math.pi*2 surface.DrawLine(_aa+math.cos(_da)*_J,_ba+math.sin(_da)*_J,_aa+math.cos(_ea)*_J,_ba+math.sin(_ea)*_J)end end end end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,115,110,97,112,108,105,110,101,115,51,100),function()if not cheat.snaplines3d then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _N,_O=cheat.W2S(_b:EyePos())if _N==0 and _O==0 then return end for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _fa,_ga=cheat.W2S(_i:GetPos())if _fa~=0 or _ga~=0 then surface.SetDrawColor(0,255,0,80)surface.DrawLine(_N,_O,_fa,_ga)end end end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,119,97,116,101,114,109,97,114,107),function()if not cheat.watermark then return end local _ha=_a..string.char(32,124,32)..os.date(string.char(37,72,58,37,77,58,37,83))local _ia=surface.GetTextSize(_ha)draw.RoundedBox(2,10,10,_ia+14,20,Color(0,0,0,180))draw.SimpleText(_ha,string.char(99,109),17,20,Color(0,200,80),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,99,114,111,115,115,104,97,105,114),function()if not cheat.crosshair then return end local _y,_ja=ScrW()/2,ScrH()/2 local _p,_ka=cheat.crosshairSize,4 surface.SetDrawColor(0,255,0,220)if cheat.crosshairStyle==0 then surface.DrawLine(_y-_p,_ja,_y-_ka,_ja)surface.DrawLine(_y+_ka,_ja,_y+_p,_ja)surface.DrawLine(_y,_ja-_p,_y,_ja-_ka)surface.DrawLine(_y,_ja+_ka,_y,_ja+_p)elseif cheat.crosshairStyle==1 then for _F=0,23 do local _da=(_F/24)*math.pi*2 local _ea=((_F+1)/24)*math.pi*2 surface.DrawLine(_y+math.cos(_da)*_p,_ja+math.sin(_da)*_p,_y+math.cos(_ea)*_p,_ja+math.sin(_ea)*_p)end else surface.DrawLine(_y-_p,_ja,_y+_p,_ja)surface.DrawLine(_y,_ja-_p,_y,_ja+_p)surface.DrawLine(_y-_p*0.7,_ja-_p*0.7,_y-_ka,_ja-_ka)surface.DrawLine(_y+_ka,_ja+_ka,_y+_p*0.7,_ja+_p*0.7)end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,102,111,118,99,105,114,99,108,101),function()if not cheat.showFov or not cheat.aimbot then return end local _y,_ja=ScrW()/2,ScrH()/2 local _g=cheat.aimbotFov local _la=LocalPlayer():GetFOV()local _J=math.tan(math.rad(_g))/math.tan(math.rad(_la/2))*(ScrW()/2)surface.SetDrawColor(255,255,255,60)for _F=0,39 do local _da=(_F/40)*math.pi*2 local _ea=((_F+1)/40)*math.pi*2 surface.DrawLine(_y+math.cos(_da)*_J,_ja+math.sin(_da)*_J,_y+math.cos(_ea)*_J,_ja+math.sin(_ea)*_J)end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,110,97,109,101,116,97,103,115),function()if not cheat.nametags then return end local _b=LocalPlayer()if not IsValid(_b)then return end for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _ma,_na=cheat.W2S(_i:GetPos()+Vector(0,0,80))if _ma~=0 or _na~=0 then draw.SimpleText(_i:Nick(),string.char(99,109),_ma,_na-14,Color(255,255,255,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)draw.SimpleText(math.Round(_b:GetPos():Distance(_i:GetPos()))..string.char(109),string.char(99,109),_ma,_na,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)end end end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,115,112,101,99,116,97,116,111,114,108,105,115,116),function()if not cheat.spectatorlist then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _oa={}for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:GetObserverTarget()==_b then table.insert(_oa,_i:Nick())end end if#_oa==0 then return end local _z,_pa=ScrW()-200,40 draw.RoundedBox(2,_z,_pa,190,20+#_oa*16,Color(0,0,0,150))draw.SimpleText(string.char(115,112,101,99,116,97,116,111,114,115,32,40)..#_oa..string.char(41),string.char(99,109),_z+4,_pa+3,Color(255,255,100),TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP)for _F,_ca in ipairs(_oa)do draw.SimpleText(_ca,string.char(99,109),_z+4,_pa+18+(_F-1)*16,Color(255,255,255,200),TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP)end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,112,114,111,112,101,115,112),function()if not cheat.propESP then return end local _b=LocalPlayer()if not IsValid(_b)then return end for _h,_i in ipairs(ents.FindByClass(string.char(112,114,111,112,95,42)))do if IsValid(_i)and _i:GetClass()==string.char(112,114,111,112,95,112,104,121,115,105,99,115)then local _o=_i:GetPos()+_i:OBBCenter()local _fa,_ga=cheat.W2S(_o)if _fa~=0 or _ga~=0 then local _qa=math.Round(_b:GetPos():Distance(_i:GetPos()))if _qa<500 then draw.SimpleText(_qa..string.char(109),string.char(99,109),_fa,_ga,Color(255,180,0,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)end end end end end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,118,105,101,119,97,110,103,108,101,115),function()if not cheat.viewangles then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _U=_b:EyeAngles()draw.SimpleText(string.format(string.char(121,97,119,58,32,37,46,49,102,32,32,112,105,116,99,104,58,32,37,46,49,102),_U.yaw,_U.pitch),string.char(99,109),ScrW()/2,ScrH()/2+30,Color(255,255,255,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)end)hook.Add(string.char(72,85,68,80,97,105,110,116),string.char(99,104,101,97,116,95,102,108,97,115,104,108,105,103,104,116),function()if not cheat.flashlight then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _y,_ja=ScrW()/2,ScrH()/2 for _F=5,1,-1 do surface.SetDrawColor(255,255,200,5)surface.DrawCircle(_y,_ja,200*(_F/5),Color(255,255,200,5))end end)function cheat.ToggleGod()cheat.god=not cheat.god RunConsoleCommand(string.char(103,111,100))end function cheat.ToggleNoClip()cheat.noclip=not cheat.noclip if cheat.noclip then hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,110,111,99,108,105,112),function()local _b=LocalPlayer()if IsValid(_b)and _b:Alive()then _b:SetMoveType(MOVETYPE_NOCLIP)end end)else hook.Remove(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,110,111,99,108,105,112))local _b=LocalPlayer()if IsValid(_b)then _b:SetMoveType(MOVETYPE_WALK)end end end function cheat.ToggleFullbright()cheat.fullbright=not cheat.fullbright RunConsoleCommand(string.char(109,97,116,95,102,117,108,108,98,114,105,103,104,116),cheat.fullbright andstring.char(49)orstring.char(48))end function cheat.ToggleSpeed()cheat.speed=not cheat.speed if cheat.speed then hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,115,112,101,101,100),function()if IsValid(LocalPlayer())then LocalPlayer():SetRunSpeed(600)LocalPlayer():SetWalkSpeed(400)end end)else hook.Remove(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,115,112,101,101,100))if IsValid(LocalPlayer())then LocalPlayer():SetRunSpeed(250)LocalPlayer():SetWalkSpeed(150)end end end function cheat.ToggleAimbot()cheat.aimbot=not cheat.aimbot if cheat.aimbot then hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,97,105,109,98,111,116),function(_ra)local _b=LocalPlayer()if not IsValid(_b)then return end local _sa=cheat.GetCrosshairTarget()if _sa and IsValid(_sa)then local _ta=_sa:WorldSpaceCenter()if cheat.headshotonly then local _ua=_sa:LookupBone(string.char(86,97,108,118,101,66,105,112,101,100,46,66,105,112,48,49,95,72,101,97,100))if _ua then _ta=_sa:GetBonePosition(_ua)end end local _n=(_ta-_b:EyePos()):Angle()if cheat.aimbotSmooth>0 then local _va=_ra:GetViewAngles()local _wa=_n-_va _wa:Normalize()_n=_va+_wa/cheat.aimbotSmooth end _ra:SetViewAngles(_n)end end)else hook.Remove(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,97,105,109,98,111,116))end end function cheat.ToggleSpectate()cheat.spectate=not cheat.spectate if cheat.spectate then local _sa=cheat.GetCrosshairTarget()if _sa and IsValid(_sa)then LocalPlayer():Spectate(OBS_MODE_IN_EYE)LocalPlayer():SpectateEntity(_sa)end else LocalPlayer():Spectate(OBS_MODE_NONE)LocalPlayer():SpectateEntity(nil)end end function cheat.ToggleHitbox()cheat.hitbox=not cheat.hitbox if not cheat.hitbox then for _h,_i in ipairs(player.GetAll())do if IsValid(_i)and _i~=LocalPlayer()then for _F=0,_i:GetBoneCount()-1 do _i:ManipulateBoneScale(_F,Vector(1,1,1))end end end end end hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,104,105,116,98,111,120),function()if not cheat.hitbox then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _p=cheat.hitboxScale for _h,_i in ipairs(player.GetAll())do if IsValid(_i)and _i~=_b and _i:Alive()then for _F=0,_i:GetBoneCount()-1 do _i:ManipulateBoneScale(_F,Vector(_p,_p,_p))end end end end)hook.Add(string.char(67,97,108,99,86,105,101,119),string.char(99,104,101,97,116,95,116,104,105,114,100,112,101,114,115,111,110),function(_xa,_o,_n,_g)if not cheat.thirdperson then return end return{origin=_o-_n:Forward()*cheat.tpDist,angles=_n,_g=_g,drawviewer=true}end)hook.Add(string.char(67,97,108,99,86,105,101,119),string.char(99,104,101,97,116,95,102,111,118),function(_xa,_o,_n,_g)if not cheat.fovChanger then return end return{origin=_o,angles=_n,_g=cheat.fovValue}end)hook.Add(string.char(67,97,108,99,86,105,101,119),string.char(99,104,101,97,116,95,102,111,118,122,111,111,109),function(_xa,_o,_n,_g)if not cheat.fovzoom then return end return{origin=_o,angles=_n,_g=cheat.fovzoomval}end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,114,101,109,111,118,101,115,104,97,100,111,119,115),function()if cheat.removeshadows then render.SuppressEngineLighting(true)end end)timer.Create(string.char(99,104,101,97,116,95,99,104,97,116,115,112,97,109),3,0,function()if cheat.chatspam then RunConsoleCommand(string.char(115,97,121),_a)end end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,114,97,105,110,98,111,119),function()if not cheat.rainbow then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _ya=RealTime()*100 _b:SetColor(Color(math.sin(_ya)*127+128,math.sin(_ya+2)*127+128,math.sin(_ya+4)*127+128))end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,110,111,102,111,103),function()if cheat.nofog then render.FogMode(MATERIAL_FOG_NONE)end end)hook.Add(string.char(80,111,115,116,68,114,97,119,79,112,97,113,117,101,82,101,110,100,101,114,97,98,108,101,115),string.char(99,104,101,97,116,95,119,105,114,101,102,114,97,109,101),function()if cheat.wireframe then render.SetWireframeMaterial(1)end end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,110,105,103,104,116,109,111,100,101),function()if not cheat.nightmode then return end render.SetAmbientLight(cheat.nightmodeVal,cheat.nightmodeVal,cheat.nightmodeVal)end)hook.Add(string.char(80,111,115,116,68,114,97,119,79,112,97,113,117,101,82,101,110,100,101,114,97,98,108,101,115),string.char(99,104,101,97,116,95,99,104,97,109,115),function()if not cheat.chams then return end local _b=LocalPlayer()if not IsValid(_b)then return end for _h,_i in ipairs(player.GetAll())do if _i~=_b and IsValid(_i)and _i:Alive()then local _za=cheat.chamsColor render.SetColorModulation(_za._J/255,_za.g/255,_za._T/255)_i:DrawModel()render.SetColorModulation(1,1,1)end end end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,110,111,115,107,121),function()if cheat.nosky then render.Clear(0,0,0,255)end end)hook.Add(string.char(69,110,116,105,116,121,84,97,107,101,68,97,109,97,103,101),string.char(99,104,101,97,116,95,104,105,116,115,111,117,110,100),function(_Aa,_Ba)if not cheat.hitsound then return end local _b=LocalPlayer()if not IsValid(_b)then return end if _Ba:GetAttacker()==_b then surface.PlaySound(string.char(98,117,116,116,111,110,115,47,98,117,116,116,111,110,49,53,46,119,97,118))end end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,115,112,105,110,98,111,116),function(_ra)if not cheat.spinbot then cheat.spinSavedAngles=nil return end local _b=LocalPlayer()if not IsValid(_b)then return end cheat.spinSavedAngles=_ra:GetViewAngles()local _n=_ra:GetViewAngles()_n.yaw=_n.yaw+cheat.spinSpeed _ra:SetViewAngles(_n)end)hook.Add(string.char(67,97,108,99,86,105,101,119),string.char(99,104,101,97,116,95,115,112,105,110,118,105,101,119),function(_xa,_o,_n,_g)if not cheat.spinbot then return end local _U=Angle(_n)_U.yaw=_U.yaw-cheat.spinSpeed return{origin=_o,angles=_U,_g=_g}end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,114,101,99,111,105,108),function(_ra)if not cheat.recoil then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _M=_b:GetActiveWeapon()if not IsValid(_M)then return end if _M.GetNextPrimaryFire and _M:GetNextPrimaryFire()>CurTime()then return end local _Ca=_b:GetViewPunchAngle()local _n=_ra:GetViewAngles()_n.pitch=_n.pitch+_Ca.pitch*0.6 _n.yaw=_n.yaw+_Ca.yaw*0.6 _ra:SetViewAngles(_n)end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,110,111,114,101,99,111,105,108),function(_ra)if not cheat.norecoil then return end local _b=LocalPlayer()if not IsValid(_b)then return end _b:SetViewPunchAngle(Angle(0,0,0))end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,114,97,112,105,100,102,105,114,101),function(_ra)if not cheat.rapidfire then return end if not _ra:KeyDown(IN_ATTACK)then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _M=_b:GetActiveWeapon()if not IsValid(_M)then return end _M:SetNextPrimaryFire(CurTime())end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,97,117,116,111,97,116,116,97,99,107),function(_ra)if not cheat.autoattack then return end _ra:SetButtons(bit.bor(_ra:GetButtons(),IN_ATTACK))end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,97,117,116,111,115,116,114,97,102,101),function(_ra)if not cheat.autostrafe then return end local _b=LocalPlayer()if not IsValid(_b)then return end if not _b:OnGround()and _ra:KeyDown(IN_SPEED)then if _ra:GetMouseX()>0 then _ra:SetSideMove(400)elseif _ra:GetMouseX()<0 then _ra:SetSideMove(-400)end end end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,98,117,110,110,121,104,111,112),function(_ra)if not cheat.bunnyhop and not cheat.bhopHold then return end local _b=LocalPlayer()if not IsValid(_b)then return end if _ra:KeyDown(IN_JUMP)and not _b:OnGround()then _ra:RemoveKey(IN_JUMP)end end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,100,117,99,107),function(_ra)if not cheat.duck then return end _ra:SetButtons(bit.bor(_ra:GetButtons(),IN_DUCK))end)hook.Add(string.char(67,114,101,97,116,101,77,111,118,101),string.char(99,104,101,97,116,95,97,110,116,105,97,105,109),function(_ra)if not cheat.antiaim then return end local _n=_ra:GetViewAngles()_n.yaw=_n.yaw+180 _n.pitch=cheat.fakepitch and-89 or 89 _ra:SetViewAngles(_n)end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,105,110,102,105,110,105,116,101,97,109,109,111),function()if not cheat.infiniteammo then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _M=_b:GetActiveWeapon()if IsValid(_M)and _M:Clip1()>0 then _M:SetClip1(_M:GetMaxClip1())end end)hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,105,110,102,105,110,105,116,101,99,108,105,112),function()if not cheat.infiniteclip then return end local _b=LocalPlayer()if not IsValid(_b)then return end local _M=_b:GetActiveWeapon()if IsValid(_M)and _M:Clip1()>0 then _M:SetClip1(_M:GetMaxClip1())end end)local _Da={}hook.Add(string.char(84,104,105,110,107),string.char(99,104,101,97,116,95,107,101,121,115),function()if not input then return end local _Ea={[KEY_F1]=function()cheat.esp=not cheat.esp end,[KEY_F2]=function()cheat.ToggleGod()end,[KEY_F3]=function()cheat.ToggleNoClip()end,[KEY_F4]=function()cheat.ToggleSpeed()end,[KEY_F5]=function()cheat.ToggleAimbot()end,[KEY_F6]=function()cheat.ToggleFullbright()end,[KEY_F7]=function()cheat.ToggleSpectate()end,[KEY_INSERT]=function()if IsValid(cheat._frame)then cheat.CloseMenu()else cheat.OpenMenu()end end,}for _Fa,_Ga in pairs(_Ea)do local _Ha=input.IsKeyDown(_Fa)if _Ha and not _Da[_Fa]then _Ga()end _Da[_Fa]=_Ha end end)local _Ia={bg=Color(12,12,15),panel=Color(20,20,24),card=Color(26,26,32),accent=Color(0,195,255),accent2=Color(0,255,120),dim=Color(100,100,110),_ha=Color(200,200,205),bright=Color(240,240,240),off=Color(50,50,56),red=Color(255,60,60),green=Color(0,220,100),purple=Color(88,101,242)}function cheat.CloseMenu()if IsValid(cheat._frame)then cheat._frame:SetMouseInputEnabled(false)cheat._frame:Remove()cheat._frame=nil end end function cheat.OpenMenu()if IsValid(cheat._frame)then cheat.CloseMenu()return end local _Ja,_Ka=380,540 local _La,_Ma=ScrW(),ScrH()local _Na=30 local _Oa=28 local _Pa={string.char(99,111,109,98,97,116),string.char(118,105,115,117,97,108,115),string.char(109,111,118,101,109,101,110,116),string.char(109,105,115,99)}local _Qa=#_Pa>0 and _Ja/#_Pa or _Ja local _Ra=1 local _Sa,_Ta,_Ua=false,0,0 local _Va=vgui.Create(string.char(68,80,97,110,101,108))_Va:SetSize(_Ja,_Ka)_Va:SetPos(_La-_Ja-40,_Ma/2-_Ka/2)_Va:MakePopup()_Va:SetKeyboardInputEnabled(false)cheat._frame=_Va _Va.Paint=function(self,_x,_w)draw.RoundedBox(8,0,0,_x,_w,_Ia.bg)surface.SetDrawColor(_Ia.accent)surface.DrawRect(0,0,1,_w)draw.RoundedBoxEx(8,0,0,_x,_Na,_Ia.panel,true,true,false,false)surface.SetDrawColor(_Ia.accent)surface.DrawRect(0,_Na-1,_x,1)draw.SimpleText(string.char(108,97,114,112,119,116,102),string.char(99,109,95,116),10,_Na/2,_Ia.accent,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)draw.RoundedBox(0,0,_Na,_Ja,_Oa,_Ia.panel)surface.SetDrawColor(_Ia.card)surface.DrawRect(0,_Na+_Oa-1,_Ja,1)for _F,_ya in ipairs(_Pa)do local _s=(_F-1)*_Qa if _F==_Ra then draw.RoundedBox(0,_s,_Na+_Oa-2,_Qa,2,_Ia.accent)draw.SimpleText(_ya,string.char(99,109),_s+_Qa/2,_Na+_Oa/2,_Ia.bright,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)else draw.SimpleText(_ya,string.char(99,109),_s+_Qa/2,_Na+_Oa/2,_Ia.dim,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)end end end _Va.OnMousePressed=function(self,_Wa)if _Wa==MOUSE_LEFT then _Sa=true local _Xa,_Ya=gui.MousePos()local _Za,_ab=self:GetPos()_Ta,_Ua=_Xa-_Za,_Ya-_ab end end _Va.OnMouseReleased=function()_Sa=false end _Va.Think=function(self)if _Sa then local _Xa,_Ya=gui.MousePos()self:SetPos(_Xa-_Ta,_Ya-_Ua)end end for _F=1,#_Pa do local _bb=vgui.Create(string.char(68,66,117,116,116,111,110),_Va)_bb:SetPos((_F-1)*_Qa,_Na)_bb:SetSize(_Qa,_Oa)_bb:SetText("")_bb.Paint=function()end _bb.DoClick=function()_Ra=_F Rebuild()end end local _cb=_Na+_Oa local _db=vgui.Create(string.char(68,83,99,114,111,108,108,80,97,110,101,108),_Va)_db:SetPos(0,_cb)_db:SetSize(_Ja,_Ka-_cb)_db.Paint=function(self,_x,_w)draw.RoundedBox(0,0,0,_x,_w,_Ia.bg)end local _eb=_db:GetVBar()_eb:SetWide(3)_eb.Paint=function(self,_x,_w)draw.RoundedBox(1,0,0,_x,_w,_Ia.panel)end _eb.btnGrip.Paint=function(self,_x,_w)draw.RoundedBox(1,0,0,_x,_w,_Ia.accent)end _eb.btnUp.Paint=function()end _eb.btnDown.Paint=function()end local _fb=_Ja-16 local function _gb(_i,_hb,_ib)local _jb=vgui.Create(string.char(68,80,97,110,101,108),_i)_jb:SetPos(8,_hb)_jb:SetSize(_fb,22)_jb.Paint=function(self,_x,_w)surface.SetDrawColor(_Ia.accent)surface.DrawRect(0,5,2,_w-10)draw.SimpleText(string.char(47,47,32).._ib,string.char(99,109),8,_w/2,_Ia.accent,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)end return _hb+26 end local function _kb(_i,_hb,_ib,_lb,_mb)local _jb=vgui.Create(string.char(68,80,97,110,101,108),_i)_jb:SetPos(8,_hb)_jb:SetSize(_fb,26)_jb.Paint=function(self,_x,_w)draw.SimpleText(_ib,string.char(99,109),4,_w/2,_Ia._ha,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)local _nb=cheat[_lb]local _ob,_pb=34,16 local _u=_x-_ob-4 local _v=(_w-_pb)/2 draw.RoundedBox(_pb/2,_u,_v,_ob,_pb,_nb and _Ia.accent or _Ia.off)local _qb=_nb and(_u+_ob-_pb+2)or(_u+2)draw.RoundedBox(_pb/2-1,_qb,_v+1,_pb-2,_pb-2,Color(255,255,255,_nb and 230 or 80))end local _bb=vgui.Create(string.char(68,66,117,116,116,111,110),_jb)_bb:SetPos(0,0)_bb:SetSize(_fb,26)_bb:SetText("")_bb.Paint=function()end _bb.DoClick=function()if _mb then _mb()else cheat[_lb]=not cheat[_lb]end end return _hb+28 end local function _rb(_i,_hb,_ib,_lb,_sb,_tb)local _jb=vgui.Create(string.char(68,80,97,110,101,108),_i)_jb:SetPos(8,_hb)_jb:SetSize(_fb,38)_jb.Paint=function(self,_x,_w)draw.SimpleText(_ib..string.char(58,32)..tostring(cheat[_lb]),string.char(99,109),4,6,_Ia.dim,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)end local _ub=22 local _vb=6 local _wb=7 local _xb=vgui.Create(string.char(68,80,97,110,101,108),_jb)_xb:SetPos(0,_ub)_xb:SetSize(_fb,_vb+_wb*2)_xb:SetCursor(string.char(104,97,110,100))_xb.Paint=function(self,_x,_w)local _t=(_w-_vb)/2 draw.RoundedBox(3,0,_t,_x,_vb,_Ia.off)local _yb=math.Clamp((cheat[_lb]-_sb)/(_tb-_sb),0,1)draw.RoundedBox(3,0,_t,_x*_yb,_vb,_Ia.accent)local _qb=_yb*_x draw.RoundedBox(_wb,_qb-_wb,(_w-_wb*2)/2,_wb*2,_wb*2,_Ia.bright)end local _zb=false _xb.OnMousePressed=function(self,_Wa)if _Wa==MOUSE_LEFT then _zb=true end end _xb.OnMouseReleased=function()_zb=false end _xb.Think=function(self)if _zb then local _Xa=self:ScreenToLocal(gui.MousePos())local _yb=math.Clamp(_Xa/self:GetWide(),0,1)cheat[_lb]=math.Round(_sb+_yb*(_tb-_sb))end end return _hb+40 end local function _Ab(_i,_hb,_ib,_Ga)local _bb=vgui.Create(string.char(68,66,117,116,116,111,110),_i)_bb:SetPos(8,_hb)_bb:SetSize(_fb,26)_bb:SetText(_ib)_bb:SetFont(string.char(99,109))_bb:SetTextColor(_Ia.bg)_bb.Paint=function(self,_x,_w)draw.RoundedBox(6,0,0,_x,_w,self:IsHovered()and _Ia.accent2 or _Ia.accent)end _bb.DoClick=_Ga return _hb+30 end local function _Bb(_i,_hb,_Cb,_E)local _Db=vgui.Create(string.char(68,76,97,98,101,108),_i)_Db:SetPos(12,_hb)_Db:SetText(_Cb)_Db:SetFont(string.char(99,109))_Db:SetTextColor(_E or _Ia.dim)_Db:SizeToContents()return _hb+16 end local function _Eb(_i,_hb,_w)return _hb+(_w or 4)end local function _Fb(_i,_hb)local _bb=vgui.Create(string.char(68,66,117,116,116,111,110),_i)_bb:SetPos(8,_hb)_bb:SetSize(_fb,30)_bb:SetText("")_bb.Paint=function(self,_x,_w)local _E=self:IsHovered()and _Ia.purple or Color(70,80,200)draw.RoundedBox(6,0,0,_x,_w,_E)draw.SimpleText(string.char(62,62,32,100,105,115,99,111,114,100,46,103,103,47,108,97,114,112,119,116,102,32,60,60),string.char(99,109),_x/2,_w/2,_Ia.bright,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)end _bb.DoClick=function()gui.OpenURL(string.char(104,116,116,112,115,58,47,47)..cheat.DiscordURL)end return _hb+34 end local _Gb={}_Gb[1]=function()local _hb=6 _hb=_gb(_hb,string.char(97,105,109,98,111,116))_hb=_kb(_hb,string.char(97,105,109,98,111,116,32,91,70,53,93),string.char(97,105,109,98,111,116),function()cheat.ToggleAimbot()end)_hb=_rb(_hb,string.char(97,105,109,98,111,116,32,102,111,118),string.char(97,105,109,98,111,116,70,111,118),1,180)_hb=_rb(_hb,string.char(97,105,109,98,111,116,32,115,109,111,111,116,104),string.char(97,105,109,98,111,116,83,109,111,111,116,104),0,20)_hb=_kb(_hb,string.char(104,101,97,100,115,104,111,116,32,111,110,108,121),string.char(104,101,97,100,115,104,111,116,111,110,108,121))_hb=_kb(_hb,string.char(115,104,111,119,32,102,111,118,32,99,105,114,99,108,101),string.char(115,104,111,119,70,111,118))_hb=_kb(_hb,string.char(114,101,99,111,105,108,32,99,111,110,116,114,111,108),string.char(114,101,99,111,105,108))_hb=_gb(_hb,string.char(114,97,103,101))_hb=_kb(_hb,string.char(115,112,105,110,98,111,116),string.char(115,112,105,110,98,111,116))_hb=_rb(_hb,string.char(115,112,105,110,32,115,112,101,101,100),string.char(115,112,105,110,83,112,101,101,100),1,50)_hb=_kb(_hb,string.char(97,110,116,105,45,97,105,109),string.char(97,110,116,105,97,105,109))_hb=_kb(_hb,string.char(102,97,107,101,32,112,105,116,99,104),string.char(102,97,107,101,112,105,116,99,104))_hb=_gb(_hb,string.char(119,101,97,112,111,110,32,109,111,100,115))_hb=_kb(_hb,string.char(114,97,112,105,100,32,102,105,114,101),string.char(114,97,112,105,100,102,105,114,101))_hb=_kb(_hb,string.char(105,110,102,105,110,105,116,101,32,97,109,109,111),string.char(105,110,102,105,110,105,116,101,97,109,109,111))_hb=_kb(_hb,string.char(110,111,32,114,101,99,111,105,108),string.char(110,111,114,101,99,111,105,108))_hb=_kb(_hb,string.char(105,110,102,105,110,105,116,101,32,99,108,105,112),string.char(105,110,102,105,110,105,116,101,99,108,105,112))_hb=_kb(_hb,string.char(97,117,116,111,32,97,116,116,97,99,107),string.char(97,117,116,111,97,116,116,97,99,107))_hb=_gb(_hb,string.char(97,117,116,111,109,97,116,105,111,110))_hb=_kb(_hb,string.char(97,117,116,111,32,100,117,99,107),string.char(100,117,99,107))_hb=_kb(_hb,string.char(97,117,116,111,32,115,116,114,97,102,101),string.char(97,117,116,111,115,116,114,97,102,101))_hb=_kb(_hb,string.char(98,117,110,110,121,32,104,111,112),string.char(98,117,110,110,121,104,111,112))_hb=_kb(_hb,string.char(116,101,97,109,32,97,105,109,98,111,116),string.char(116,101,97,109,97,105,109,98,111,116))end _Gb[2]=function()local _hb=6 _hb=_gb(_hb,string.char(112,108,97,121,101,114,32,101,115,112))_hb=_kb(_hb,string.char(101,115,112,32,91,70,49,93),string.char(101,115,112))_hb=_kb(_hb,string.char(98,111,120,101,115),string.char(101,115,112,66,111,120,101,115))_hb=_kb(_hb,string.char(104,101,97,108,116,104,32,98,97,114,115),string.char(101,115,112,72,101,97,108,116,104))_hb=_kb(_hb,string.char(110,97,109,101,115,32,43,32,104,112,32,43,32,119,101,97,112,111,110),string.char(101,115,112,78,97,109,101,115))_hb=_kb(_hb,string.char(115,110,97,112,108,105,110,101,115),string.char(101,115,112,83,110,97,112,108,105,110,101,115))_hb=_kb(_hb,string.char(103,108,111,119),string.char(103,108,111,119))_hb=_gb(_hb,string.char(111,116,104,101,114,32,101,115,112))_hb=_kb(_hb,string.char(115,107,101,108,101,116,111,110),string.char(115,107,101,108,101,116,111,110))_hb=_kb(_hb,string.char(104,101,97,100,32,99,105,114,99,108,101,115),string.char(104,101,97,100,99,105,114,99,108,101))_hb=_kb(_hb,string.char(51,100,32,115,110,97,112,108,105,110,101,115),string.char(115,110,97,112,108,105,110,101,115,51,100))_hb=_kb(_hb,string.char(110,97,109,101,32,116,97,103,115,32,43,32,100,105,115,116),string.char(110,97,109,101,116,97,103,115))_hb=_kb(_hb,string.char(112,114,111,112,32,101,115,112),string.char(112,114,111,112,69,83,80))_hb=_kb(_hb,string.char(115,112,101,99,116,97,116,111,114,32,108,105,115,116),string.char(115,112,101,99,116,97,116,111,114,108,105,115,116))_hb=_gb(_hb,string.char(114,101,110,100,101,114))_hb=_kb(_hb,string.char(99,114,111,115,115,104,97,105,114),string.char(99,114,111,115,115,104,97,105,114))_hb=_rb(_hb,string.char(99,114,111,115,115,104,97,105,114,32,115,105,122,101),string.char(99,114,111,115,115,104,97,105,114,83,105,122,101),4,30)_hb=_kb(_hb,string.char(114,101,109,111,118,101,32,115,104,97,100,111,119,115),string.char(114,101,109,111,118,101,115,104,97,100,111,119,115))_hb=_kb(_hb,string.char(110,111,32,102,111,103),string.char(110,111,102,111,103))_hb=_kb(_hb,string.char(110,111,32,115,107,121),string.char(110,111,115,107,121))_hb=_kb(_hb,string.char(102,117,108,108,98,114,105,103,104,116,32,91,70,54,93),string.char(102,117,108,108,98,114,105,103,104,116),function()cheat.ToggleFullbright()end)_hb=_kb(_hb,string.char(119,105,114,101,102,114,97,109,101),string.char(119,105,114,101,102,114,97,109,101))_hb=_kb(_hb,string.char(110,105,103,104,116,32,109,111,100,101),string.char(110,105,103,104,116,109,111,100,101))_hb=_rb(_hb,string.char(110,105,103,104,116,32,98,114,105,103,104,116,110,101,115,115),string.char(110,105,103,104,116,109,111,100,101,86,97,108),0,1)_hb=_kb(_hb,string.char(99,104,97,109,115),string.char(99,104,97,109,115))_hb=_kb(_hb,string.char(114,97,105,110,98,111,119,32,112,108,97,121,101,114),string.char(114,97,105,110,98,111,119))_hb=_kb(_hb,string.char(104,105,116,32,115,111,117,110,100),string.char(104,105,116,115,111,117,110,100))_hb=_kb(_hb,string.char(118,105,101,119,32,97,110,103,108,101,115),string.char(118,105,101,119,97,110,103,108,101,115))_hb=_kb(_hb,string.char(102,108,97,115,104,108,105,103,104,116,32,111,118,101,114,108,97,121),string.char(102,108,97,115,104,108,105,103,104,116))_hb=_gb(_hb,string.char(109,111,100,101,108))_hb=_kb(_hb,string.char(104,105,116,98,111,120,32,101,120,112,97,110,100,101,114),string.char(104,105,116,98,111,120),function()cheat.ToggleHitbox()end)_hb=_rb(_hb,string.char(104,105,116,98,111,120,32,115,99,97,108,101),string.char(104,105,116,98,111,120,83,99,97,108,101),1,10)end _Gb[3]=function()local _hb=6 _hb=_gb(_hb,string.char(109,111,118,101,109,101,110,116,32,91,115,105,110,103,108,101,112,108,97,121,101,114,93))_hb=_kb(_hb,string.char(103,111,100,32,109,111,100,101,32,91,70,50,93),string.char(103,111,100),function()cheat.ToggleGod()end)_hb=_kb(_hb,string.char(110,111,99,108,105,112,32,91,70,51,93),string.char(110,111,99,108,105,112),function()cheat.ToggleNoClip()end)_hb=_kb(_hb,string.char(115,112,101,101,100,32,98,111,111,115,116,32,91,70,52,93),string.char(115,112,101,101,100),function()cheat.ToggleSpeed()end)_hb=_kb(_hb,string.char(115,112,101,99,116,97,116,101,32,91,70,55,93),string.char(115,112,101,99,116,97,116,101),function()cheat.ToggleSpectate()end)_hb=_gb(_hb,string.char(109,111,118,101,109,101,110,116))_hb=_kb(_hb,string.char(116,104,105,114,100,112,101,114,115,111,110),string.char(116,104,105,114,100,112,101,114,115,111,110))_hb=_rb(_hb,string.char(116,112,32,100,105,115,116,97,110,99,101),string.char(116,112,68,105,115,116),30,200)_hb=_kb(_hb,string.char(102,111,118,32,99,104,97,110,103,101,114),string.char(102,111,118,67,104,97,110,103,101,114))_hb=_rb(_hb,string.char(102,111,118,32,118,97,108,117,101),string.char(102,111,118,86,97,108,117,101),60,160)_hb=_kb(_hb,string.char(122,111,111,109,32,104,97,99,107),string.char(102,111,118,122,111,111,109))_hb=_rb(_hb,string.char(122,111,111,109,32,102,111,118),string.char(102,111,118,122,111,111,109,118,97,108),10,80)end _Gb[4]=function()local _hb=6 _hb=_Fb(_hb)_hb=_gb(_hb,string.char(102,117,110))_hb=_kb(_hb,string.char(99,104,97,116,32,115,112,97,109),string.char(99,104,97,116,115,112,97,109))_hb=_gb(_hb,string.char(105,110,102,111))_hb=_Bb(_hb,string.char(70,49,45,70,55,32,32,61,32,32,113,117,105,99,107,32,116,111,103,103,108,101,115))_hb=_Bb(_hb,string.char(73,78,83,69,82,84,32,32,61,32,32,111,112,101,110,47,99,108,111,115,101,32,109,101,110,117))_hb=_Bb(_hb,string.char(115,101,114,118,101,114,45,115,105,100,101,32,102,101,97,116,117,114,101,115,32,111,110,108,121,32,119,111,114,107,32,105,110,32,115,105,110,103,108,101,112,108,97,121,101,114),_Ia.green)_hb=_Eb(_hb,4)_hb=_gb(_hb,string.char(113,117,105,99,107))_hb=_Ab(_hb,string.char(69,78,65,66,76,69,32,65,76,76),function()cheat.esp=true cheat.skeleton=true cheat.headcircle=true cheat.nametags=true cheat.crosshair=true cheat.watermark=true cheat.spectatorlist=true cheat.propESP=true if not cheat.god then cheat.ToggleGod()end if not cheat.noclip then cheat.ToggleNoClip()end if not cheat.aimbot then cheat.ToggleAimbot()end end)_hb=_Ab(_hb,string.char(68,73,83,65,66,76,69,32,65,76,76),function()cheat.esp=false cheat.skeleton=false cheat.headcircle=false cheat.nametags=false cheat.crosshair=false cheat.glow=false cheat.spinbot=false cheat.antiaim=false cheat.bunnyhop=false cheat.rainbow=false cheat.chatspam=false cheat.duck=false cheat.autostrafe=false cheat.thirdperson=false cheat.fovChanger=false cheat.nofog=false cheat.wireframe=false cheat.nightmode=false cheat.chams=false cheat.spectatorlist=false cheat.propESP=false cheat.hitsound=false cheat.nosky=false cheat.recoil=false cheat.showFov=false cheat.rapidfire=false cheat.infiniteammo=false cheat.norecoil=false cheat.infiniteclip=false cheat.autoattack=false cheat.fovzoom=false if cheat.god then cheat.ToggleGod()end if cheat.noclip then cheat.ToggleNoClip()end if cheat.speed then cheat.ToggleSpeed()end if cheat.aimbot then cheat.ToggleAimbot()end if cheat.spectate then cheat.ToggleSpectate()end end)end function Rebuild()_db:Clear()if _Gb[_Ra]then _Gb[_Ra]()end end Rebuild()end concommand.Add(string.char(99,104,101,97,116),function()if IsValid(cheat._frame)then cheat.CloseMenu()else cheat.OpenMenu()end end)print(string.char(91,108,97,114,112,119,116,102,93,32,108,111,97,100,101,100,46,32,39,99,104,101,97,116,39,32,116,111,32,111,112,101,110,44,32,73,78,83,69,82,84,32,116,111,32,116,111,103,103,108,101))
+if not CLIENT then return end
+
+surface.CreateFont("cm",{font="Consolas",size=14,weight=400})
+surface.CreateFont("cm_b",{font="Consolas",size=14,weight=700})
+surface.CreateFont("cm_t",{font="Consolas",size=16,weight=700})
+surface.CreateFont("cm_bg",{font="Consolas",size=20,weight=700})
+
+local discordURL="discord.gg/larpwtf"
+cheat=cheat or{}
+cheat.esp=false cheat.god=false cheat.noclip=false cheat.speed=false
+cheat.aimbot=false cheat.fullbright=false cheat.spectate=false
+cheat.hitbox=false cheat.hitboxScale=3 cheat.thirdperson=false cheat.tpDist=80
+cheat.fovChanger=false cheat.fovValue=100 cheat.crosshair=false cheat.crosshairSize=10
+cheat.crosshairStyle=0 cheat.nametags=false cheat.removeshadows=false
+cheat.chatspam=false cheat.rainbow=false cheat.spinbot=false cheat.spinSpeed=10
+cheat.skeleton=false cheat.headcircle=false cheat.snaplines3d=false
+cheat.duck=false cheat.autostrafe=false cheat.espBoxes=true cheat.espHealth=true
+cheat.espNames=true cheat.espSnaplines=true cheat.glow=false cheat.bunnyhop=false
+cheat.antiaim=false cheat.fakepitch=false cheat.viewangles=false cheat.watermark=true
+cheat.spinSavedAngles=nil cheat.nofog=false cheat.nightmode=false cheat.nightmodeVal=0.1
+cheat.wireframe=false cheat.chams=false cheat.chamsColor=Color(0,200,255)
+cheat.spectatorlist=false cheat.hitsound=false cheat.propESP=false
+cheat.nosky=false cheat.flashlight=false cheat.teamaimbot=false cheat.recoil=false
+cheat.bhopHold=false cheat.autoreload=false cheat.headshotonly=false
+cheat.aimbotSmooth=0 cheat.aimbotFov=10 cheat.showFov=false cheat.antiut=false
+cheat.DiscordURL=discordURL
+cheat.rapidfire=false cheat.infiniteammo=false cheat.norecoil=false
+cheat.infiniteclip=false cheat.autoattack=false cheat.fovzoom=false cheat.fovzoomval=20
+cheat.rocketspam=false
+cheat.noreload=false
+cheat.npcESP=false cheat.entityESP=false cheat.itemESP=false
+
+function cheat.SyncServer(key,val)
+	RunConsoleCommand("cheat_set",key,tostring(val))
+end
+
+function cheat.GetCrosshairTarget()
+	local lp=LocalPlayer()
+	if not IsValid(lp) then return nil end
+	local eyePos=lp:EyePos()
+	local fwd=lp:EyeAngles():Forward()
+	local best,nil2=nil,999999
+	local fov=cheat.aimbotFov
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local dir=p:WorldSpaceCenter()-eyePos
+			local dot=dir:Dot(fwd)
+			if dot>0 then
+				local hit=eyePos+fwd*dot
+				local d2=hit:DistToSqr(p:WorldSpaceCenter())
+				local ang=math.deg(math.acos(math.Clamp(dir:GetNormalized():Dot(fwd),-1,1)))
+				if ang<=fov and d2<nil2 then nil2=d2 best=p end
+			end
+		end
+	end
+	return best
+end
+
+function cheat.GetNPCrosshairTarget()
+	local lp=LocalPlayer()
+	if not IsValid(lp) then return nil end
+	local eyePos=lp:EyePos()
+	local fwd=lp:EyeAngles():Forward()
+	local best,bestDist=nil,999999
+	local fov=cheat.npcAimbotFov
+	for _,npc in ipairs(ents.FindByClass("npc_*")) do
+		if IsValid(npc) and npc:Health()>0 then
+			local center=npc:WorldSpaceCenter()
+			local dir=center-eyePos
+			local dot=dir:Dot(fwd)
+			if dot>0 then
+				local ang=math.deg(math.acos(math.Clamp(dir:GetNormalized():Dot(fwd),-1,1)))
+				if ang<=fov then
+					local d=eyePos:DistToSqr(center)
+					if d<bestDist then bestDist=d best=npc end
+				end
+			end
+		end
+	end
+	return best
+end
+
+function cheat.W2S(pos) local s=pos:ToScreen() return s.x,s.y end
+
+-- ESP
+hook.Add("HUDPaint","cheat_esp",function()
+	if not cheat.esp then return end
+	local lp=LocalPlayer()
+	if not IsValid(lp) then return end
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local top=p:GetPos()+Vector(0,0,72)
+			local bot=p:GetPos()
+			local tx,ty=cheat.W2S(top)
+			local bx,by=cheat.W2S(bot)
+			if(tx==0 and ty==0)or(bx==0 and by==0) then continue end
+			local h=math.abs(ty-by)
+			if h<5 then continue end
+			local w=h*0.6 local cx=(tx+bx)/2 local lx=cx-w/2 local topy=math.min(ty,by)
+			local tr=lp:GetEyeTrace() local aimed=tr and IsValid(tr.Entity) and tr.Entity==p
+			local team=p:Team()==lp:Team()
+			local col
+			if aimed then col=Color(255,220,0) elseif team then col=Color(100,200,100) else col=Color(0,200,255) end
+			if cheat.glow then for i=3,1,-1 do surface.SetDrawColor(col.r,col.g,col.b,30) surface.DrawOutlinedRect(lx-i,topy-i,w+i*2,h+i*2,1) end end
+			if cheat.espBoxes then surface.SetDrawColor(col) surface.DrawOutlinedRect(lx,topy,w,h,1) end
+			if cheat.espBooks then
+				local hp=p:Health() local mhp=math.max(p:GetMaxHealth(),1) local r=math.Clamp(hp/mhp,0,1) local hh=h*r
+				local hc=r>0.5 and Color(0,220,80) or(r>0.25 and Color(255,200,0) or Color(255,40,40))
+				surface.SetDrawColor(Color(0,0,0,160)) surface.DrawRect(lx-5,topy,3,h)
+				surface.SetDrawColor(hc) surface.DrawRect(lx-5,topy+(h-hh),3,hh)
+			end
+			if cheat.espHealth then
+				local hp=p:Health() local mhp=math.max(p:GetMaxHealth(),1) local r=math.Clamp(hp/mhp,0,1) local hh=h*r
+				local hc=r>0.5 and Color(0,220,80) or(r>0.25 and Color(255,200,0) or Color(255,40,40))
+				surface.SetDrawColor(Color(0,0,0,160)) surface.DrawRect(lx-5,topy,3,h)
+				surface.SetDrawColor(hc) surface.DrawRect(lx-5,topy+(h-hh),3,hh)
+			end
+			if cheat.espNames then
+				draw.SimpleText(p:Nick(),"cm",cx,topy-6,Color(255,255,255,230),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)
+				local hp=p:Health() local mhp=math.max(p:GetMaxHealth(),1) local r=math.Clamp(hp/mhp,0,1)
+				local hc=r>0.5 and Color(0,220,80) or(r>0.25 and Color(255,200,0) or Color(255,40,40))
+				draw.SimpleText(hp.." hp","cm",cx,topy+h+4,hc,TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+				local wep=p:GetActiveWeapon()
+				if IsValid(wep) then draw.SimpleText(wep:GetPrintName(),"cm",cx,topy+h+16,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP) end
+			end
+			if cheat.espSnaplines then
+				local ex,ey=cheat.W2S(lp:EyePos())
+				if ex~=0 or ey~=0 then surface.SetDrawColor(col.r,col.g,col.b,80) surface.DrawLine(ex,ey,cx,topy+h/2) end
+			end
+		end
+	end
+end)
+
+local function GetBone(p,bname) local id=p:LookupBone(bname) if not id then return nil end return p:GetBonePosition(id) end
+
+-- Skeleton
+hook.Add("HUDPaint","cheat_skeleton",function()
+	if not cheat.skeleton then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local bones={
+		{"ValveBiped.Bip01_Head","ValveBiped.Bip01_Neck"},
+		{"ValveBiped.Bip01_Neck","ValveBiped.Bip01_Spine4"},
+		{"ValveBiped.Bip01_Spine4","ValveBiped.Bip01_Spine2"},
+		{"ValveBiped.Bip01_Spine2","ValveBiped.Bip01_Spine"},
+		{"ValveBiped.Bip01_Spine","ValveBiped.Bip01_Pelvis"},
+		{"ValveBiped.Bip01_Neck","ValveBiped.Bip01_L_UpperArm"},
+		{"ValveBiped.Bip01_L_UpperArm","ValveBiped.Bip01_L_Forearm"},
+		{"ValveBiped.Bip01_L_Forearm","ValveBiped.Bip01_L_Hand"},
+		{"ValveBiped.Bip01_Neck","ValveBiped.Bip01_R_UpperArm"},
+		{"ValveBiped.Bip01_R_UpperArm","ValveBiped.Bip01_R_Forearm"},
+		{"ValveBiped.Bip01_R_Forearm","ValveBiped.Bip01_R_Hand"},
+		{"ValveBiped.Bip01_Pelvis","ValveBiped.Bip01_L_Thigh"},
+		{"ValveBiped.Bip01_L_Thigh","ValveBiped.Bip01_L_Calf"},
+		{"ValveBiped.Bip01_L_Calf","ValveBiped.Bip01_L_Foot"},
+		{"ValveBiped.Bip01_Pelvis","ValveBiped.Bip01_R_Thigh"},
+		{"ValveBiped.Bip01_R_Thigh","ValveBiped.Bip01_R_Calf"},
+		{"ValveBiped.Bip01_R_Calf","ValveBiped.Bip01_R_Foot"},
+	}
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			surface.SetDrawColor(255,255,255,180)
+			for _,b in ipairs(bones) do
+				local a=GetBone(p,b[1]) local bb=GetBone(p,b[2])
+				if a and bb then
+					local ax,ay=cheat.W2S(a) local bx2,by2=cheat.W2S(bb)
+					if(ax~=0 or ay~=0)and(bx2~=0 or by2~=0) then surface.DrawLine(ax,ay,bx2,by2) end
+				end
+			end
+		end
+	end
+end)
+
+-- Head circles
+hook.Add("HUDPaint","cheat_headcircle",function()
+	if not cheat.headcircle then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local hx,hy=cheat.W2S(p:GetPos()+Vector(0,0,72))
+			if hx~=0 or hy~=0 then
+				surface.SetDrawColor(255,0,0,200)
+				local r,n=12,20
+				for i=0,n-1 do local a1=(i/n)*math.pi*2 local a2=((i+1)/n)*math.pi*2 surface.DrawLine(hx+math.cos(a1)*r,hy+math.sin(a1)*r,hx+math.cos(a2)*r,hy+math.sin(a2)*r) end
+			end
+		end
+	end
+end)
+
+-- 3D Snaplines
+hook.Add("HUDPaint","cheat_snaplines3d",function()
+	if not cheat.snaplines3d then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local ex,ey=cheat.W2S(lp:EyePos()) if ex==0 and ey==0 then return end
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local px,py=cheat.W2S(p:GetPos())
+			if px~=0 or py~=0 then surface.SetDrawColor(0,255,0,80) surface.DrawLine(ex,ey,px,py) end
+		end
+	end
+end)
+
+-- Watermark
+hook.Add("HUDPaint","cheat_watermark",function()
+	if not cheat.watermark then return end
+	local txt=discordURL.." | "..os.date("%H:%M:%S")
+	surface.SetFont("cm")
+	local tw=surface.GetTextSize(txt)
+	draw.RoundedBox(2,10,10,tw+14,20,Color(0,0,0,180))
+	draw.SimpleText(txt,"cm",17,20,Color(0,200,80),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+end)
+
+-- Crosshair
+hook.Add("HUDPaint","cheat_crosshair",function()
+	if not cheat.crosshair then return end
+	local cx,cy=ScrW()/2,ScrH()/2 local s,pg=cheat.crosshairSize,4
+	surface.SetDrawColor(0,255,0,220)
+	if cheat.crosshairStyle==0 then
+		surface.DrawLine(cx-s,cy,cx-pg,cy) surface.DrawLine(cx+pg,cy,cx+s,cy)
+		surface.DrawLine(cx,cy-s,cx,cy-pg) surface.DrawLine(cx,cy+pg,cx,cy+s)
+	elseif cheat.crosshairStyle==1 then
+		for i=0,23 do local a1=(i/24)*math.pi*2 local a2=((i+1)/24)*math.pi*2 surface.DrawLine(cx+math.cos(a1)*s,cy+math.sin(a1)*s,cx+math.cos(a2)*s,cy+math.sin(a2)*s) end
+	else
+		surface.DrawLine(cx-s,cy,cx+s,cy) surface.DrawLine(cx,cy-s,cx,cy+s)
+		surface.DrawLine(cx-s*0.7,cy-s*0.7,cx-pg,cy-pg) surface.DrawLine(cx+pg,cy+pg,cx+s*0.7,cy+s*0.7)
+	end
+end)
+
+-- FOV circle
+hook.Add("HUDPaint","cheat_fovcircle",function()
+	if not cheat.showFov or not cheat.aimbot then return end
+	local cx,cy=ScrW()/2,ScrH()/2 local fov=cheat.aimbotFov
+	local pfov=LocalPlayer():GetFOV()
+	local r=math.tan(math.rad(fov))/math.tan(math.rad(pfov/2))*(ScrW()/2)
+	surface.SetDrawColor(255,255,255,60)
+	for i=0,39 do local a1=(i/40)*math.pi*2 local a2=((i+1)/40)*math.pi*2 surface.DrawLine(cx+math.cos(a1)*r,cy+math.sin(a1)*r,cx+math.cos(a2)*r,cy+math.sin(a2)*r) end
+end)
+
+-- Name tags
+hook.Add("HUDPaint","cheat_nametags",function()
+	if not cheat.nametags then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local nx,ny=cheat.W2S(p:GetPos()+Vector(0,0,80))
+			if nx~=0 or ny~=0 then
+				draw.SimpleText(p:Nick(),"cm",nx,ny-14,Color(255,255,255,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)
+				draw.SimpleText(math.Round(lp:GetPos():Distance(p:GetPos())).."m","cm",nx,ny,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+			end
+		end
+	end
+end)
+
+-- Spectator list
+hook.Add("HUDPaint","cheat_spectatorlist",function()
+	if not cheat.spectatorlist then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local list={}
+	for _,p in ipairs(player.GetAll()) do if p~=lp and IsValid(p) and p:GetObserverTarget()==lp then table.insert(list,p:Nick()) end end
+	if #list==0 then return end
+	local lx,ly=ScrW()-200,40
+	draw.RoundedBox(2,lx,ly,190,20+#list*16,Color(0,0,0,150))
+	draw.SimpleText("spectators ("..#list..")","cm",lx+4,ly+3,Color(255,255,100),TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP)
+	for i,n in ipairs(list) do draw.SimpleText(n,"cm",lx+4,ly+18+(i-1)*16,Color(255,255,255,200),TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP) end
+end)
+
+-- Prop ESP
+hook.Add("HUDPaint","cheat_propesp",function()
+	if not cheat.propESP then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,p in ipairs(ents.FindByClass("prop_*")) do
+		if IsValid(p) and p:GetClass()=="prop_physics" then
+			local pos=p:GetPos()+p:OBBCenter() local px,py=cheat.W2S(pos)
+			if px~=0 or py~=0 then
+				local d=math.Round(lp:GetPos():Distance(p:GetPos()))
+				if d<500 then draw.SimpleText(d.."m","cm",px,py,Color(255,180,0,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
+			end
+		end
+	end
+end)
+
+-- NPC ESP (box + name + health for all NPCs)
+hook.Add("HUDPaint","cheat_npcesp",function()
+	if not cheat.npcESP then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,npc in ipairs(ents.FindByClass("npc_*")) do
+		if IsValid(npc) and npc:GetClass()~="npc_think" and npc:Health()>0 then
+			local top=npc:GetPos()+Vector(0,0,npc:OBBMaxs().z)
+			local bot=npc:GetPos()
+			local tx,ty=cheat.W2S(top)
+			local bx,by=cheat.W2S(bot)
+			if(tx==0 and ty==0)or(bx==0 and by==0) then goto skipnpc end
+			local h=math.abs(ty-by)
+			if h<5 then goto skipnpc end
+			local w=h*0.6 local cx=(tx+bx)/2 local lx=cx-w/2 local topy=math.min(ty,by)
+			local hp=npc:Health() local mhp=math.max(npc:GetMaxHealth(),1) local r=math.Clamp(hp/mhp,0,1)
+			local hc=r>0.5 and Color(0,220,80)or(r>0.25 and Color(255,200,0)or Color(255,40,40))
+			surface.SetDrawColor(255,100,0) surface.DrawOutlinedRect(lx,topy,w,h,1)
+			surface.SetDrawColor(Color(0,0,0,160)) surface.DrawRect(lx-5,topy,3,h)
+			surface.SetDrawColor(hc) surface.DrawRect(lx-5,topy+(h-h*r),3,h*r)
+			draw.SimpleText(npc:GetClass(),"cm",cx,topy-6,Color(255,100,0,230),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)
+			draw.SimpleText(hp.." hp","cm",cx,topy+h+4,hc,TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+			local d=math.Round(lp:GetPos():Distance(npc:GetPos()))
+			draw.SimpleText(d.."m","cm",cx,topy+h+16,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+			::skipnpc::
+		end
+	end
+end)
+
+-- Entity ESP (SENTs, vehicles, brushes, etc)
+hook.Add("HUDPaint","cheat_entityesp",function()
+	if not cheat.entityESP then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,e in ipairs(ents.GetAll()) do
+		if not IsValid(e) then goto skipent end
+		local cls=e:GetClass()
+		if cls:find("^npc_") or cls:find("^prop_") or cls==e:GetClass() and not cls:find("^func_") and not cls:find("^env_") and not cls:find("^info_") and not cls:find("^trigger_") and not cls:find("^player") then
+			if not e:IsWorld() and e:EntIndex()>0 and e:GetPos():Distance(lp:GetPos())<800 then
+				local isVeh=cls:find("^prop_vehicle") or cls:find("^vehicle_")
+				local isSent=cls:find("^sent_")
+				if isVeh or isSent then
+					local pos=e:GetPos()+Vector(0,0,30)
+					local px,py=cheat.W2S(pos)
+					if px~=0 or py~=0 then
+						local d=math.Round(lp:GetPos():Distance(e:GetPos()))
+						local col=isVeh and Color(0,200,255) or Color(200,100,255)
+						draw.SimpleText(cls,"cm",px,py-8,Color(col.r,col.g,col.b,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)
+						draw.SimpleText(d.."m","cm",px,py+8,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+					end
+				end
+			end
+		end
+		::skipent::
+	end
+end)
+
+-- Item ESP (dropped weapons, ammo, shipments, money, etc.)
+hook.Add("HUDPaint","cheat_itemesp",function()
+	if not cheat.itemESP then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local itemClasses={"weapon_*","item_*","ammo_*","shipment_*","money_*","dm_*","spawned_*","cs_*","zyb_*","DarkRP_*","magnet_*","gmod_*"}
+	for _,pattern in ipairs(itemClasses) do
+		for _,e in ipairs(ents.FindByClass(pattern)) do
+			if not IsValid(e) then goto skipitem end
+			if e:IsWorld() then goto skipitem end
+			if e:EntIndex()<=0 then goto skipitem end
+			local d=lp:GetPos():Distance(e:GetPos())
+			if d>600 then goto skipitem end
+			local pos=e:GetPos()+Vector(0,0,10)
+			local px,py=cheat.W2S(pos)
+			if px~=0 or py~=0 then
+				local cls=e:GetClass()
+				local printName=e.PrintName or cls
+				draw.SimpleText(printName,"cm",px,py-6,Color(0,255,180,200),TEXT_ALIGN_CENTER,TEXT_ALIGN_BOTTOM)
+				draw.SimpleText(d.."m","cm",px,py+6,Color(180,180,180,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+			end
+			::skipitem::
+		end
+	end
+end)
+
+-- View angles display
+hook.Add("HUDPaint","cheat_viewangles",function()
+	if not cheat.viewangles then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local a=lp:EyeAngles()
+	draw.SimpleText(string.format("yaw: %.1f  pitch: %.1f",a.yaw,a.pitch),"cm",ScrW()/2,ScrH()/2+30,Color(255,255,255,150),TEXT_ALIGN_CENTER,TEXT_ALIGN_TOP)
+end)
+
+-- Flashlight overlay
+hook.Add("HUDPaint","cheat_flashlight",function()
+	if not cheat.flashlight then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local cx,cy=ScrW()/2,ScrH()/2
+	for i=5,1,-1 do surface.SetDrawColor(255,255,200,5) surface.DrawCircle(cx,cy,200*(i/5),Color(255,255,200,5)) end
+end)
+
+-- Toggle functions
+function cheat.ToggleGod()
+	cheat.god=not cheat.god
+	RunConsoleCommand("god")
+end
+
+function cheat.ToggleNoClip()
+	cheat.noclip=not cheat.noclip
+	if cheat.noclip then
+		hook.Add("Think","cheat_noclip",function()
+			local lp=LocalPlayer()
+			if IsValid(lp) and lp:Alive() then lp:SetMoveType(MOVETYPE_NOCLIP) end
+		end)
+	else
+		hook.Remove("Think","cheat_noclip")
+		local lp=LocalPlayer()
+		if IsValid(lp) then lp:SetMoveType(MOVETYPE_WALK) end
+	end
+end
+
+function cheat.ToggleFullbright()
+	cheat.fullbright=not cheat.fullbright
+	RunConsoleCommand("mat_fullbright",cheat.fullbright and "1" or "0")
+end
+
+function cheat.ToggleSpeed()
+	cheat.speed=not cheat.speed
+	if cheat.speed then
+		hook.Add("Think","cheat_speed",function()
+			if IsValid(LocalPlayer()) then LocalPlayer():SetRunSpeed(600) LocalPlayer():SetWalkSpeed(400) end
+		end)
+	else
+		hook.Remove("Think","cheat_speed")
+		if IsValid(LocalPlayer()) then LocalPlayer():SetRunSpeed(250) LocalPlayer():SetWalkSpeed(150) end
+	end
+end
+
+function cheat.ToggleAimbot()
+	cheat.aimbot=not cheat.aimbot
+	if cheat.aimbot then
+		hook.Add("CreateMove","cheat_aimbot",function(cmd)
+			local lp=LocalPlayer() if not IsValid(lp) then return end
+			local tgt=cheat.GetCrosshairTarget()
+			if tgt and IsValid(tgt) then
+				local aim=tgt:WorldSpaceCenter()
+				if cheat.headshotonly then
+					local bid=tgt:LookupBone("ValveBiped.Bip01_Head")
+					if bid then aim=tgt:GetBonePosition(bid) end
+				end
+				local ang=(aim-lp:EyePos()):Angle()
+				if cheat.aimbotSmooth>0 then
+					local ca=cmd:GetViewAngles() local diff=ang-ca diff:Normalize() ang=ca+diff/cheat.aimbotSmooth
+				end
+				cmd:SetViewAngles(ang)
+			end
+		end)
+	else
+		hook.Remove("CreateMove","cheat_aimbot")
+	end
+end
+
+function cheat.ToggleSpectate()
+	cheat.spectate=not cheat.spectate
+	if cheat.spectate then
+		local tgt=cheat.GetCrosshairTarget()
+		if tgt and IsValid(tgt) then LocalPlayer():Spectate(OBS_MODE_IN_EYE) LocalPlayer():SpectateEntity(tgt) end
+	else
+		LocalPlayer():Spectate(OBS_MODE_NONE) LocalPlayer():SpectateEntity(nil)
+	end
+end
+
+function cheat.ToggleHitbox()
+	cheat.hitbox=not cheat.hitbox
+	if not cheat.hitbox then
+		for _,p in ipairs(player.GetAll()) do
+			if IsValid(p) and p~=LocalPlayer() then for i=0,p:GetBoneCount()-1 do p:ManipulateBoneScale(i,Vector(1,1,1)) end end
+		end
+	end
+end
+
+-- Hitbox Think
+hook.Add("Think","cheat_hitbox",function()
+	if not cheat.hitbox then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local s=cheat.hitboxScale
+	for _,p in ipairs(player.GetAll()) do
+		if IsValid(p) and p~=lp and p:Alive() then for i=0,p:GetBoneCount()-1 do p:ManipulateBoneScale(i,Vector(s,s,s)) end end
+	end
+end)
+
+-- NPC Aimbot toggle
+function cheat.ToggleNpcAimbot()
+	cheat.npcAimbot=not cheat.npcAimbot
+	if cheat.npcAimbot then
+		hook.Add("CreateMove","cheat_npcaimbot",function(cmd)
+			local lp=LocalPlayer() if not IsValid(lp) then return end
+			local tgt=cheat.GetNPCrosshairTarget()
+			if tgt and IsValid(tgt) then
+				local aim=tgt:WorldSpaceCenter()
+				if cheat.headshotonly then
+					local bid=tgt:LookupBone("ValveBiped.Bip01_Head")
+					if bid then aim=tgt:GetBonePosition(bid) end
+				end
+				local ang=(aim-lp:EyePos()):Angle()
+				if cheat.npcAimbotSmooth>0 then
+					local ca=cmd:GetViewAngles() local diff=ang-ca diff:Normalize() ang=ca+diff/cheat.npcAimbotSmooth
+				end
+				cmd:SetViewAngles(ang)
+			end
+		end)
+	else
+		hook.Remove("CreateMove","cheat_npcaimbot")
+	end
+end
+
+-- NPC Hitbox expander toggle
+function cheat.ToggleNpcHitbox()
+	cheat.npcHitbox=not cheat.npcHitbox
+	if not cheat.npcHitbox then
+		for _,npc in ipairs(ents.FindByClass("npc_*")) do
+			if IsValid(npc) then for i=0,npc:GetBoneCount()-1 do npc:ManipulateBoneScale(i,Vector(1,1,1)) end end
+		end
+	end
+end
+
+-- NPC Hitbox Think
+hook.Add("Think","cheat_npchitbox",function()
+	if not cheat.npcHitbox then return end
+	local s=cheat.npcHitboxScale
+	for _,npc in ipairs(ents.FindByClass("npc_*")) do
+		if IsValid(npc) and npc:Health()>0 then for i=0,npc:GetBoneCount()-1 do npc:ManipulateBoneScale(i,Vector(s,s,s)) end end
+	end
+end)
+
+-- Thirdperson
+hook.Add("CalcView","cheat_thirdperson",function(ply,pos,ang,fov)
+	if not cheat.thirdperson then return end
+	return{origin=pos-ang:Forward()*cheat.tpDist,angles=ang,fov=fov,drawviewer=true}
+end)
+
+-- FOV Changer
+hook.Add("CalcView","cheat_fov",function(ply,pos,ang,fov)
+	if not cheat.fovChanger then return end
+	return{origin=pos,angles=ang,fov=cheat.fovValue}
+end)
+
+-- Zoom Hack
+hook.Add("CalcView","cheat_fovzoom",function(ply,pos,ang,fov)
+	if not cheat.fovzoom then return end
+	return{origin=pos,angles=ang,fov=cheat.fovzoomval}
+end)
+
+-- Remove shadows
+hook.Add("Think","cheat_removeshadows",function()
+	if cheat.removeshadows then render.SuppressEngineLighting(true) end
+end)
+
+-- Chat spam
+timer.Create("cheat_chatspam",3,0,function()
+	if cheat.chatspam then RunConsoleCommand("say",discordURL) end
+end)
+
+-- Rainbow
+hook.Add("Think","cheat_rainbow",function()
+	if not cheat.rainbow then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local t=RealTime()*100
+	lp:SetColor(Color(math.sin(t)*127+128,math.sin(t+2)*127+128,math.sin(t+4)*127+128))
+end)
+
+-- No fog
+hook.Add("Think","cheat_nofog",function()
+	if cheat.nofog then render.FogMode(MATERIAL_FOG_NONE) end
+end)
+
+-- Wireframe
+hook.Add("PostDrawOpaqueRenderables","cheat_wireframe",function()
+	if cheat.wireframe then render.SetWireframeMaterial(1) end
+end)
+
+-- Night mode
+hook.Add("Think","cheat_nightmode",function()
+	if not cheat.nightmode then return end
+	render.SetAmbientLight(cheat.nightmodeVal,cheat.nightmodeVal,cheat.nightmodeVal)
+end)
+
+-- Chams
+hook.Add("PostDrawOpaqueRenderables","cheat_chams",function()
+	if not cheat.chams then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	for _,p in ipairs(player.GetAll()) do
+		if p~=lp and IsValid(p) and p:Alive() then
+			local c=cheat.chamsColor
+			render.SetColorModulation(c.r/255,c.g/255,c.b/255)
+			p:DrawModel()
+			render.SetColorModulation(1,1,1)
+		end
+	end
+end)
+
+-- No sky
+hook.Add("Think","cheat_nosky",function()
+	if cheat.nosky then render.Clear(0,0,0,255) end
+end)
+
+-- Hit sound
+hook.Add("EntityTakeDamage","cheat_hitsound",function(victim,dmg)
+	if not cheat.hitsound then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	if dmg:GetAttacker()==lp then surface.PlaySound("buttons/button15.wav") end
+end)
+
+-- ============ CreateMove HOOKS ============
+
+-- Spinbot (server sees spin, client doesn't)
+hook.Add("CreateMove","cheat_spinbot",function(cmd)
+	if not cheat.spinbot then cheat.spinSavedAngles=nil return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	cheat.spinSavedAngles=cmd:GetViewAngles()
+	local ang=cmd:GetViewAngles()
+	ang.yaw=ang.yaw+cheat.spinSpeed
+	cmd:SetViewAngles(ang)
+end)
+
+-- Spinbot view counter (client doesn't see spin)
+hook.Add("CalcView","cheat_spinview",function(ply,pos,ang,fov)
+	if not cheat.spinbot then return end
+	local a=Angle(ang)
+	a.yaw=a.yaw-cheat.spinSpeed
+	return{origin=pos,angles=a,fov=fov}
+end)
+
+-- Recoil control (lock view angles to counteract punch)
+hook.Add("CreateMove","cheat_recoil",function(cmd)
+	if not cheat.recoil then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	if wep.GetNextPrimaryFire and wep:GetNextPrimaryFire()>CurTime() then return end
+	cmd:SetViewAngles(cmd:GetViewAngles())
+end)
+
+-- No recoil (re-lock view angles each tick)
+hook.Add("CreateMove","cheat_norecoil",function(cmd)
+	if not cheat.norecoil then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	cmd:SetViewAngles(cmd:GetViewAngles())
+end)
+
+-- Rapid fire
+hook.Add("CreateMove","cheat_rapidfire",function(cmd)
+	if not cheat.rapidfire then return end
+	if not cmd:KeyDown(IN_ATTACK) then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	wep:SetNextPrimaryFire(CurTime())
+end)
+
+-- Auto attack
+hook.Add("CreateMove","cheat_autoattack",function(cmd)
+	if not cheat.autoattack then return end
+	cmd:SetButtons(bit.bor(cmd:GetButtons(),IN_ATTACK))
+end)
+
+-- Auto strafe
+hook.Add("CreateMove","cheat_autostrafe",function(cmd)
+	if not cheat.autostrafe then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	if not lp:OnGround() and cmd:KeyDown(IN_SPEED) then
+		if cmd:GetMouseX()>0 then cmd:SetSideMove(400) elseif cmd:GetMouseX()<0 then cmd:SetSideMove(-400) end
+	end
+end)
+
+-- Bunny hop
+hook.Add("CreateMove","cheat_bunnyhop",function(cmd)
+	if not cheat.bunnyhop and not cheat.bhopHold then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	if cmd:KeyDown(IN_JUMP) and not lp:OnGround() then cmd:RemoveKey(IN_JUMP) end
+end)
+
+-- Auto duck
+hook.Add("CreateMove","cheat_duck",function(cmd)
+	if not cheat.duck then return end
+	cmd:SetButtons(bit.bor(cmd:GetButtons(),IN_DUCK))
+end)
+
+-- Anti-aim
+hook.Add("CreateMove","cheat_antiaim",function(cmd)
+	if not cheat.antiaim then return end
+	local ang=cmd:GetViewAngles()
+	ang.yaw=ang.yaw+180
+	ang.pitch=cheat.fakepitch and -89 or 89
+	cmd:SetViewAngles(ang)
+end)
+
+-- ============ Think HOOKS ============
+
+-- Infinite ammo (keep clip full every tick)
+hook.Add("Think","cheat_infiniteammo",function()
+	if not cheat.infiniteammo then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	wep:SetClip1(wep:GetMaxClip1())
+end)
+
+-- Infinite clip (clip never decreases)
+hook.Add("Think","cheat_infiniteclip",function()
+	if not cheat.infiniteclip then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	wep:SetClip1(wep:GetMaxClip1())
+end)
+
+-- No reload (cancel reload state every tick)
+hook.Add("Think","cheat_noreload",function()
+	if not cheat.noreload then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) then return end
+	wep:SetClip1(wep:GetMaxClip1())
+	wep:SetNextPrimaryFire(CurTime())
+	wep:SetNextSecondaryFire(CurTime())
+end)
+
+-- Rocket launcher spam (rapid fire + infinite ammo + no reload for RPG)
+hook.Add("Think","cheat_rocketspam",function()
+	if not cheat.rocketspam then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) or wep:GetClass()~="weapon_rpg" then return end
+	wep:SetClip1(wep:GetMaxClip1())
+	wep:SetNextPrimaryFire(CurTime())
+	wep:SetNextSecondaryFire(CurTime())
+end)
+
+hook.Add("CreateMove","cheat_rocketspam",function(cmd)
+	if not cheat.rocketspam then return end
+	local lp=LocalPlayer() if not IsValid(lp) then return end
+	local wep=lp:GetActiveWeapon()
+	if not IsValid(wep) or wep:GetClass()~="weapon_rpg" then return end
+	wep:SetNextPrimaryFire(CurTime())
+	wep:SetNextSecondaryFire(CurTime())
+	wep:SetClip1(wep:GetMaxClip1())
+	cmd:SetViewAngles(cmd:GetViewAngles())
+end)
+
+-- ============ KEY HANDLER ============
+local keys={}
+hook.Add("Think","cheat_keys",function()
+	if not input then return end
+	local binds={
+		[KEY_F1]=function() cheat.esp=not cheat.esp end,
+		[KEY_F2]=function() cheat.ToggleGod() end,
+		[KEY_F3]=function() cheat.ToggleNoClip() end,
+		[KEY_F4]=function() cheat.ToggleSpeed() end,
+		[KEY_F5]=function() cheat.ToggleAimbot() end,
+		[KEY_F6]=function() cheat.ToggleFullbright() end,
+		[KEY_F7]=function() cheat.ToggleSpectate() end,
+		[KEY_INSERT]=function() if IsValid(cheat._frame) then cheat.CloseMenu() else cheat.OpenMenu() end end,
+	}
+	for k,fn in pairs(binds) do
+		local down=input.IsKeyDown(k)
+		if down and not keys[k] then fn() end
+		keys[k]=down
+	end
+end)
+
+-- ============ MENU ============
+local C={bg=Color(12,12,15),panel=Color(20,20,24),card=Color(26,26,32),accent=Color(0,195,255),accent2=Color(0,255,120),dim=Color(100,100,110),txt=Color(200,200,205),bright=Color(240,240,240),off=Color(50,50,56),red=Color(255,60,60),green=Color(0,220,100),purple=Color(88,101,242)}
+
+function cheat.CloseMenu()
+	if IsValid(cheat._frame) then cheat._frame:SetMouseInputEnabled(false) cheat._frame:Remove() cheat._frame=nil end
+end
+
+function cheat.OpenMenu()
+	if IsValid(cheat._frame) then cheat.CloseMenu() return end
+	local W,H=380,540 local sw,sh=ScrW(),ScrH()
+	local titleH=30 local tabH=28
+	local tabs={"combat","visuals","movement","misc"}
+	local tabW=#tabs>0 and W/#tabs or W
+	local activeTab=1
+	local dragging,sx,sy=false,0,0
+
+	local frame=vgui.Create("DPanel")
+	frame:SetSize(W,H) frame:SetPos(sw-W-40,sh/2-H/2)
+	frame:MakePopup() frame:SetKeyboardInputEnabled(false)
+	cheat._frame=frame
+
+	frame.Paint=function(self,w,h)
+		draw.RoundedBox(8,0,0,w,h,C.bg)
+		surface.SetDrawColor(C.accent) surface.DrawRect(0,0,1,h)
+		draw.RoundedBoxEx(8,0,0,w,titleH,C.panel,true,true,false,false)
+		surface.SetDrawColor(C.accent) surface.DrawRect(0,titleH-1,w,1)
+		draw.SimpleText("larpwtf","cm_t",10,titleH/2,C.accent,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+		draw.RoundedBox(0,0,titleH,W,tabH,C.panel)
+		surface.SetDrawColor(C.card) surface.DrawRect(0,titleH+tabH-1,W,1)
+		for i,t in ipairs(tabs) do
+			local tx=(i-1)*tabW
+			if i==activeTab then
+				draw.RoundedBox(0,tx,titleH+tabH-2,tabW,2,C.accent)
+				draw.SimpleText(t,"cm",tx+tabW/2,titleH+tabH/2,C.bright,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			else
+				draw.SimpleText(t,"cm",tx+tabW/2,titleH+tabH/2,C.dim,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+			end
+		end
+	end
+
+	frame.OnMousePressed=function(self,mc)
+		if mc==MOUSE_LEFT then dragging=true local mx,my=gui.MousePos() local fx,fy=self:GetPos() sx,sy=mx-fx,my-fy end
+	end
+	frame.OnMouseReleased=function() dragging=false end
+	frame.Think=function(self) if dragging then local mx,my=gui.MousePos() self:SetPos(mx-sx,my-sy) end end
+
+	-- Tab buttons
+	for i=1,#tabs do
+		local btn=vgui.Create("DButton",frame)
+		btn:SetPos((i-1)*tabW,titleH) btn:SetSize(tabW,tabH) btn:SetText("") btn.Paint=function() end
+		btn.DoClick=function() activeTab=i Rebuild() end
+	end
+
+	local scrollStart=titleH+tabH
+	local scroll=vgui.Create("DScrollPanel",frame)
+	scroll:SetPos(0,scrollStart) scroll:SetSize(W,H-scrollStart)
+	scroll.Paint=function(self,w,h) draw.RoundedBox(0,0,0,w,h,C.bg) end
+	local sb=scroll:GetVBar() sb:SetWide(3)
+	sb.Paint=function(self,w,h) draw.RoundedBox(1,0,0,w,h,C.panel) end
+	sb.btnGrip.Paint=function(self,w,h) draw.RoundedBox(1,0,0,w,h,C.accent) end
+	sb.btnUp.Paint=function() end sb.btnDown.Paint=function() end
+
+	local contentW=W-16
+
+	-- Helper: section header
+	local function Section(y,label)
+		local p2=vgui.Create("DPanel",scroll) p2:SetPos(8,y) p2:SetSize(contentW,22)
+		p2.Paint=function(self,w,h) surface.SetDrawColor(C.accent) surface.DrawRect(0,5,2,h-10) draw.SimpleText("// "..label,"cm",8,h/2,C.accent,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) end
+		return y+26
+	end
+
+	-- Helper: toggle
+	local function Toggle(y,label,key,func)
+		local p2=vgui.Create("DPanel",scroll) p2:SetPos(8,y) p2:SetSize(contentW,26)
+		p2.Paint=function(self,w,h)
+			draw.SimpleText(label,"cm",4,h/2,C.txt,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+			local val=cheat[key] local bw,bh=34,16 local bx=w-bw-4 local by=(h-bh)/2
+			draw.RoundedBox(bh/2,bx,by,bw,bh,val and C.accent or C.off)
+			local kx=val and(bx+bw-bh+2)or(bx+2)
+			draw.RoundedBox(bh/2-1,kx,by+1,bh-2,bh-2,Color(255,255,255,val and 230 or 80))
+		end
+		local btn=vgui.Create("DButton",p2) btn:SetPos(0,0) btn:SetSize(contentW,26) btn:SetText("") btn.Paint=function() end
+		btn.DoClick=function() if func then func() else cheat[key]=not cheat[key] end cheat.SyncServer(key,cheat[key]) end
+		return y+28
+	end
+
+	-- Helper: slider
+	local function Slider(y,label,key,min,max)
+		local p2=vgui.Create("DPanel",scroll) p2:SetPos(8,y) p2:SetSize(contentW,38)
+		p2.Paint=function(self,w,h)
+			draw.SimpleText(label..": "..tostring(cheat[key]),"cm",4,6,C.dim,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+		end
+		local sh2=22 local trackH=6 local knobR=7
+		local slider=vgui.Create("DPanel",p2) slider:SetPos(0,sh2) slider:SetSize(contentW,trackH+knobR*2)
+		slider:SetCursor("hand")
+		slider.Paint=function(self,w,h)
+			local ty=(h-trackH)/2
+			draw.RoundedBox(3,0,ty,w,trackH,C.off)
+			local pct=math.Clamp((cheat[key]-min)/(max-min),0,1)
+			draw.RoundedBox(3,0,ty,w*pct,trackH,C.accent)
+			local kx=pct*w draw.RoundedBox(knobR,kx-knobR,(h-knobR*2)/2,knobR*2,knobR*2,C.bright)
+		end
+		local held=false
+		slider.OnMousePressed=function(self,mc) if mc==MOUSE_LEFT then held=true end end
+		slider.OnMouseReleased=function() held=false end
+		slider.Think=function(self)
+			if held then
+				local mx=self:ScreenToLocal(gui.MousePos())
+				local pct=math.Clamp(mx/self:GetWide(),0,1)
+				cheat[key]=math.Round(min+pct*(max-min))
+			end
+		end
+		return y+40
+	end
+
+	-- Helper: action button
+	local function ActionBtn(y,label,fn)
+		local btn=vgui.Create("DButton",scroll) btn:SetPos(8,y) btn:SetSize(contentW,26)
+		btn:SetText(label) btn:SetFont("cm") btn:SetTextColor(C.bg)
+		btn.Paint=function(self,w,h) draw.RoundedBox(6,0,0,w,h,self:IsHovered() and C.accent2 or C.accent) end
+		btn.DoClick=fn return y+30
+	end
+
+	-- Helper: info label
+	local function Info(y,text,col)
+		local lbl=vgui.Create("DLabel",scroll) lbl:SetPos(12,y) lbl:SetText(text) lbl:SetFont("cm") lbl:SetTextColor(col or C.dim) lbl:SizeToContents() return y+16
+	end
+
+	-- Helper: blank spacer
+	local function Spacer(y,h) return y+(h or 4) end
+
+	-- Discord button
+	local function DiscordBtn(y)
+		local btn=vgui.Create("DButton",scroll) btn:SetPos(8,y) btn:SetSize(contentW,30)
+		btn:SetText("") btn.Paint=function(self,w,h)
+			local col=self:IsHovered() and C.purple or Color(70,80,200)
+			draw.RoundedBox(6,0,0,w,h,col)
+			draw.SimpleText(">> discord.gg/larpwtf <<","cm",w/2,h/2,C.bright,TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+		end
+		btn.DoClick=function() gui.OpenURL("https://"..cheat.DiscordURL) end return y+34
+	end
+
+	local TABS={}
+	TABS[1]=function()
+		local y=6
+		y=Section(y,"aimbot")
+		y=Toggle(y,"aimbot [F5]","aimbot",function() cheat.ToggleAimbot() end)
+		y=Slider(y,"aimbot fov","aimbotFov",1,180)
+		y=Slider(y,"aimbot smooth","aimbotSmooth",0,20)
+		y=Toggle(y,"headshot only","headshotonly")
+		y=Toggle(y,"show fov circle","showFov")
+		y=Toggle(y,"recoil control","recoil")
+		y=Section(y,"rage")
+		y=Toggle(y,"spinbot","spinbot")
+		y=Slider(y,"spin speed","spinSpeed",1,50)
+		y=Toggle(y,"anti-aim","antiaim")
+		y=Toggle(y,"fake pitch","fakepitch")
+		y=Section(y,"weapon mods")
+		y=Toggle(y,"rapid fire","rapidfire")
+		y=Toggle(y,"infinite ammo","infiniteammo")
+		y=Toggle(y,"no recoil","norecoil")
+		y=Toggle(y,"infinite clip","infiniteclip")
+		y=Toggle(y,"auto attack","autoattack")
+		y=Toggle(y,"rocket launcher spam","rocketspam")
+		y=Toggle(y,"no reload","noreload")
+		y=Section(y,"automation")
+		y=Toggle(y,"auto duck","duck")
+		y=Toggle(y,"auto strafe","autostrafe")
+		y=Toggle(y,"bunny hop","bunnyhop")
+		y=Toggle(y,"team aimbot","teamaimbot")
+		y=Section(y,"npc")
+		y=Toggle(y,"npc aimbot","npcAimbot",function() cheat.ToggleNpcAimbot() end)
+		y=Slider(y,"npc aimbot fov","npcAimbotFov",1,180)
+		y=Slider(y,"npc aimbot smooth","npcAimbotSmooth",0,20)
+	end
+
+	TABS[2]=function()
+		local y=6
+		y=Section(y,"player esp")
+		y=Toggle(y,"esp [F1]","esp")
+		y=Toggle(y,"boxes","espBoxes")
+		y=Toggle(y,"health bars","espHealth")
+		y=Toggle(y,"names + hp + weapon","espNames")
+		y=Toggle(y,"snaplines","espSnaplines")
+		y=Toggle(y,"glow","glow")
+		y=Section(y,"other esp")
+		y=Toggle(y,"skeleton","skeleton")
+		y=Toggle(y,"head circles","headcircle")
+		y=Toggle(y,"3d snaplines","snaplines3d")
+		y=Toggle(y,"name tags + dist","nametags")
+		y=Toggle(y,"prop esp","propESP")
+		y=Toggle(y,"npc esp","npcESP")
+		y=Toggle(y,"entity esp (vehicles, sents)","entityESP")
+		y=Toggle(y,"item esp (weapons, ammo, etc)","itemESP")
+		y=Toggle(y,"spectator list","spectatorlist")
+		y=Section(y,"render")
+		y=Toggle(y,"crosshair","crosshair")
+		y=Slider(y,"crosshair size","crosshairSize",4,30)
+		y=Toggle(y,"remove shadows","removeshadows")
+		y=Toggle(y,"no fog","nofog")
+		y=Toggle(y,"no sky","nosky")
+		y=Toggle(y,"fullbright [F6]","fullbright",function() cheat.ToggleFullbright() end)
+		y=Toggle(y,"wireframe","wireframe")
+		y=Toggle(y,"night mode","nightmode")
+		y=Slider(y,"night brightness","nightmodeVal",0,1)
+		y=Toggle(y,"chams","chams")
+		y=Toggle(y,"rainbow player","rainbow")
+		y=Toggle(y,"hit sound","hitsound")
+		y=Toggle(y,"view angles","viewangles")
+		y=Toggle(y,"flashlight overlay","flashlight")
+		y=Section(y,"model")
+		y=Toggle(y,"hitbox expander","hitbox",function() cheat.ToggleHitbox() end)
+		y=Slider(y,"hitbox scale","hitboxScale",1,10)
+		y=Toggle(y,"npc hitbox expander","npcHitbox",function() cheat.ToggleNpcHitbox() end)
+		y=Slider(y,"npc hitbox scale","npcHitboxScale",1,10)
+	end
+
+	TABS[3]=function()
+		local y=6
+		y=Section(y,"movement [singleplayer]")
+		y=Toggle(y,"god mode [F2]","god",function() cheat.ToggleGod() end)
+		y=Toggle(y,"noclip [F3]","noclip",function() cheat.ToggleNoClip() end)
+		y=Toggle(y,"speed boost [F4]","speed",function() cheat.ToggleSpeed() end)
+		y=Toggle(y,"spectate [F7]","spectate",function() cheat.ToggleSpectate() end)
+		y=Section(y,"movement")
+		y=Toggle(y,"thirdperson","thirdperson")
+		y=Slider(y,"tp distance","tpDist",30,200)
+		y=Toggle(y,"fov changer","fovChanger")
+		y=Slider(y,"fov value","fovValue",60,160)
+		y=Toggle(y,"zoom hack","fovzoom")
+		y=Slider(y,"zoom fov","fovzoomval",10,80)
+	end
+
+	TABS[4]=function()
+		local y=6
+		y=DiscordBtn(y)
+		y=Section(y,"fun")
+		y=Toggle(y,"chat spam","chatspam")
+		y=Section(y,"info")
+		y=Info(y,"F1-F7  =  quick toggles")
+		y=Info(y,"INSERT  =  open/close menu")
+		y=Info(y,"server-side features need cheat_server.lua in autorun/",C.green)
+		y=Spacer(y,4)
+		y=Section(y,"quick")
+		y=ActionBtn(y,"ENABLE ALL",function()
+			cheat.esp=true cheat.skeleton=true cheat.headcircle=true
+			cheat.nametags=true cheat.crosshair=true cheat.watermark=true
+			cheat.spectatorlist=true cheat.propESP=true
+			cheat.rapidfire=true cheat.infiniteammo=true cheat.norecoil=true
+			cheat.infiniteclip=true cheat.rocketspam=true cheat.noreload=true
+			cheat.SyncServer("rapidfire",true) cheat.SyncServer("infiniteammo",true)
+			cheat.SyncServer("norecoil",true) cheat.SyncServer("infiniteclip",true)
+			cheat.SyncServer("rocketspam",true) cheat.SyncServer("noreload",true)
+			if not cheat.god then cheat.ToggleGod() end
+			if not cheat.noclip then cheat.ToggleNoClip() end
+			if not cheat.aimbot then cheat.ToggleAimbot() end
+		end)
+		y=ActionBtn(y,"DISABLE ALL",function()
+			cheat.esp=false cheat.skeleton=false cheat.headcircle=false
+			cheat.nametags=false cheat.crosshair=false cheat.glow=false
+			cheat.spinbot=false cheat.antiaim=false cheat.bunnyhop=false
+			cheat.rainbow=false cheat.chatspam=false cheat.duck=false
+			cheat.autostrafe=false cheat.thirdperson=false cheat.fovChanger=false
+			cheat.nofog=false cheat.wireframe=false cheat.nightmode=false
+			cheat.chams=false cheat.spectatorlist=false cheat.propESP=false
+			cheat.hitsound=false cheat.nosky=false cheat.recoil=false
+			cheat.showFov=false cheat.rapidfire=false cheat.infiniteammo=false
+			cheat.norecoil=false cheat.infiniteclip=false cheat.autoattack=false
+			cheat.fovzoom=false cheat.rocketspam=false cheat.noreload=false
+cheat.npcESP=false cheat.entityESP=false cheat.itemESP=false
+cheat.npcAimbot=false cheat.npcAimbotFov=30 cheat.npcAimbotSmooth=0
+cheat.npcHitbox=false cheat.npcHitboxScale=3
+			cheat.npcAimbot=false cheat.npcHitbox=false
+			cheat.SyncServer("rapidfire",false) cheat.SyncServer("infiniteammo",false)
+			cheat.SyncServer("norecoil",false) cheat.SyncServer("infiniteclip",false)
+			cheat.SyncServer("rocketspam",false) cheat.SyncServer("noreload",false)
+			if cheat.god then cheat.ToggleGod() end
+			if cheat.noclip then cheat.ToggleNoClip() end
+			if cheat.speed then cheat.ToggleSpeed() end
+			if cheat.aimbot then cheat.ToggleAimbot() end
+			if cheat.spectate then cheat.ToggleSpectate() end
+			if cheat.npcAimbot then cheat.ToggleNpcAimbot() end
+			if cheat.npcHitbox then cheat.ToggleNpcHitbox() end
+		end)
+	end
+
+	function Rebuild() scroll:Clear() if TABS[activeTab] then TABS[activeTab]() end end
+	Rebuild()
+end
+
+concommand.Add("cheat",function()
+	if IsValid(cheat._frame) then cheat.CloseMenu() else cheat.OpenMenu() end
+end)
+
+print("[larpwtf] loaded. 'cheat' to open, INSERT to toggle")
